@@ -15,6 +15,19 @@
     </div>
     
     <div>
+        <strong>Technologies</strong>:
+        @if (count($project->technologies) > 0)
+        @foreach ($project->technologies as $technology)  {{-- technologies e' la funzione nel model Project --}}
+            {{$technology->name}}
+        @endforeach
+            
+        @else
+           No technology assigned
+        @endif
+         
+    </div>
+    
+    <div>
         {{-- se client_name c'è allora stampa client_name, altrimenti stampa 'empty' --}}
         <strong>Client name</strong>: {{ $project->client_name ? $project->client_name : 'empty' }}
     </div>
