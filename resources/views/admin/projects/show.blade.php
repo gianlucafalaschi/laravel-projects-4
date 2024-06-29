@@ -17,14 +17,13 @@
     <div>
         <strong>Technologies</strong>:
         @if (count($project->technologies) > 0)
-        @foreach ($project->technologies as $technology)  {{-- technologies e' la funzione nel model Project --}}
-            {{$technology->name}}
-        @endforeach
-            
+            @foreach ($project->technologies as $technology)  {{-- technologies e' la funzione nel model Project --}}
+                {{$technology->name}}
+            @endforeach  
         @else
-           No technology assigned
+            No technology assigned
         @endif
-         
+
     </div>
     
     <div>

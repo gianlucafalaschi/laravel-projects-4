@@ -36,7 +36,10 @@ class ProjectController extends Controller
         //passare informazioni dal model della tabella types   
         $types = Type::all();
         //dd($types);
-        return view('admin.projects.create', compact('types'));
+        //passare informazioni dal model della tabella technologies
+        $technologies = Technology::all();
+        //dd($technologies);
+        return view('admin.projects.create', compact('types', 'technologies'));
     }
 
     /**
@@ -55,7 +58,8 @@ class ProjectController extends Controller
             'cover_image' => 'nullable|image|max:256',
             // valore della select nel form create. Per essere validato o non è inserito o se 
             //inserito ha uno dei valori esistenti nella colonna id della tabella types
-            'type_id' => 'nullable|exists:types,id'   
+            'type_id' => 'nullable|exists:types,id',
+            'tags' => 'exists:technology_id'   
         ]);
 
 
@@ -77,6 +81,13 @@ class ProjectController extends Controller
         $newProject->slug = Str::slug($formData['name'], '-');
         $newProject->fill($formData);
         $newProject->save();
+
+        // per le technologies usate essendo in una tabella ponte (non esiste una colonna tags) non posso usare il fill, uso invece attach
+        // se le checkboxes delle tecnologies sono settate
+        if($request->has('technologies')) {
+            // attacca a $newProject i tags che ci sono in $formData  // technologies e' la funzione nel model Project
+            $newProject->technologies()->attach($formData['technologies']);
+        }
 
         //dd($formData);
         return redirect()->route('admin.projects.show', ['project' => $newProject->slug]);

@@ -40,7 +40,19 @@
         @endforeach
       </select>
     </div>
-    
+
+    <div class="mb-3">
+      <h5>Technologies</h5>
+      @foreach ($technologies as $technology)
+      <div class="form-check">          {{-- funzione old --}}                                                                             {{-- metto i valori del name dentro un array[], altrimente il form invia solo l'ultima checkbox selezionata --}}
+        <input class="form-check-input" @checked(in_array($technology->id, old('technologies', []))) name="technologies[]" type="checkbox" value="{{ $technology->id }}" id="technology-{{ $technology->id }}">
+        <label class="form-check-label" for="technology-{{ $technology->id }}">
+          {{ $technology->name }}
+        </label>
+      </div>
+      @endforeach
+    </div>
+
     <div class="mb-3">
         <label for="summary" class="form-label">Summary</label>
         <textarea class="form-control" id="summary" name="summary" rows="8">{{ old('summary') }}</textarea>
