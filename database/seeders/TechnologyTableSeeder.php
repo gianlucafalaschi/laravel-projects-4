@@ -18,10 +18,10 @@ class TechnologyTableSeeder extends Seeder
     {
         $technologies = ['css','js', 'vue', 'sql', 'php', 'laravel'];
         
-        foreach($technologies as $technology) {
+        foreach ($technologies as $technologyName) {
             $newTechnology = new Technology();
-            $newTechnology->name = $technology;
-            $newTechnology->slug = Str::slug($newTechnology->name , '-');
+            $newTechnology->name =  $technologyName;
+            $newTechnology->slug = Str::slug($newTechnology->name, '-');
             $newTechnology->save();
 
         }

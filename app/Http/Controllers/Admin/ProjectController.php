@@ -9,6 +9,7 @@ use Illuminate\Support\Str; // importo classe Str per ricavare slug
 use Illuminate\Validation\Rule; // importo class Rule per usare ignore nella validation dell'update
 use Illuminate\Support\Facades\Storage; // importo storage per usare storage per le immagini
 use App\Models\Type;
+use App\Models\Technology;
 
 class ProjectController extends Controller
 {

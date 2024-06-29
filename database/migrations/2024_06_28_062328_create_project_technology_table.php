@@ -17,7 +17,6 @@ return new class extends Migration
             //tabella ponte, non necessita di colonne id e timestamp
             // creo le colonne e specifico che sono foreign key
             $table->unsignedBigInteger('project_id');
-            
             $table->foreign('project_id')
             ->references('id')
             ->on('projects')
@@ -30,7 +29,7 @@ return new class extends Migration
             ->onDelete('cascade');
             
             // entrambe le colonne sono primary key ( questa riga non è obbligatoria ma può velocizzare la ricerca nel DB)
-            $table->primary('project_id','technology_id'); 
+            $table->primary(['project_id', 'technology_id']);
 
 
         });
