@@ -44,13 +44,33 @@
     <div class="mb-3">
         <label for="type_id" class="form-label">Type</label>
         <select class="form-select" id="type_id" name="type_id">
-          <option value="">Open this select menu</option>
-          @foreach ($types as $type)
+        <option value="">Open this select menu</option>
+        @foreach ($types as $type)
             {{-- se lo user ha messo un valore ma l'edit è fallito stampa popola con il valore dell'old, altrimenti popola con il valore del database --}}
             <option @selected($type->id == old('type_id', $project->type_id)) value="{{ $type->id}}">{{$type->name}}</option>
-          @endforeach
+        @endforeach
         </select>
-      </div>
+    </div>
+
+    <div class="mb-3">
+        <h5>Technologies</h5>
+        {{-- {{ dd($project->technologies) }} --}}
+        @foreach ($technologies as $technology)
+        <div class="form-check"> 
+            @if ($errors->any())
+            {{-- se ci sono errori in pagina prepopolo la checkbox con l'old --}}
+            {{-- funzione old/              in_array permette di sapere se c'è un certo dato dentro una array dentro una collection --}}  {{-- metto i valori del name dentro un array[], altrimente il form invia solo l'ultima checkbox selezionata --}}
+            <input class="form-check-input" @checked(in_array($technology->id, old('technologies',[] )))   name="technologies[]" type="checkbox" value="{{ $technology->id }}" id="technology-{{ $technology->id }}">
+            @else
+            {{-- se non ci sono errori, l'utente sta caricando la pagina per la prima volta, allora voglio prepopolare le checkbox utilizzando il contain della collection --}}
+            <input class="form-check-input" @checked($project->technologies->contains($technology))   name="technologies[]" type="checkbox" value="{{ $technology->id }}" id="technology-{{ $technology->id }}">    
+            @endif            
+            <label class="form-check-label" for="technology-{{ $technology->id }}">
+            {{ $technology->name }}
+        </label>
+        </div>
+        @endforeach
+    </div>
 
     <div class="mb-3">
         <label for="summary" class="form-label">Summary</label>
@@ -58,5 +78,5 @@
     </div>
     
     <button type="submit" class="btn btn-primary">Save</button>
-  </form>
+</form>
 @endsection

@@ -115,8 +115,11 @@ class ProjectController extends Controller
     {   
         //passare informazioni dal model della tabella types   
         $types = Type::all();
-        //dd($project);
-        return view('admin.projects.edit', compact('project', 'types'));
+
+        //passare informazioni dal model della tabella technologies
+        $technologies = Technology::all();
+        //dd($technologies);
+        return view('admin.projects.edit', compact('project', 'types', 'technologies'));
     }
 
     /**
@@ -142,11 +145,12 @@ class ProjectController extends Controller
             'cover_image' => 'nullable|image|max:256',
             // valore della select nel form create. Per essere validato o non è inserito o se 
             //inserito ha uno dei valori esistenti nella colonna id della tabella types
-            'type_id' => 'nullable|exists:types,id' 
+            'type_id' => 'nullable|exists:types,id', 
+            'technologies' => 'exists:technologies,id'
         ]);
 
         $formData = $request->all();
-
+        //dd($formData);
         // per aggiungere immagini alla colonna cover_image
         if($request->hasFile('cover_image')) {
             // Se c'è l'immagine vecchia la cancello dalla cartella
@@ -164,6 +168,13 @@ class ProjectController extends Controller
         //dd($formData);
         $project->update($formData);
 
+        // se $request ha le technologies (l'utente ne ha selezionata almeno una) le sync, 
+        if($request->has('technologies')) {
+            $project->technologies()->sync($formData['technologies']);
+        } else {
+            // altrimenti sync di un array vuoto (tutte le tecnologie vengono tolte nel db)
+            $project->technologies()->sync([]);
+        }
 
         return redirect()->route('admin.projects.show', ['project' => $project->slug]);  
     }
